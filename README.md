@@ -1,6 +1,6 @@
-# FeedAI - Capstone23
+# **FeedAI - Capstone23**
 This project involves the automation of teacher feedback analysis and report generation using Google Sheets, Google's Generative AI, and Google Docs. The primary goal is to streamline the process of collecting feedback from students, analyzing the responses, and generating detailed teacher reports.
-## S1: Initialization and Dependencies
+## _S1 Initialization and Dependencies_
 In this section, we initiate the code by setting the working directory to a specified path and installing the required dependencies. The necessary libraries, including gspread for Google Sheets integration and google.generativeai for natural language generation, are imported. Additionally, standard libraries such as os, io, shutil, and time are imported to facilitate file operations, input/output handling, and time-related functionalities.
 
 ```
@@ -18,7 +18,7 @@ import time, os, io, shutil
 from googleapiclient.http import MediaIoBaseDownload
 ```
 
-## S2: Google Sheets Authentication
+## _S2 Google Sheets Authentication_
 
 Here, we authenticate with the Google Sheets API using a service account. The service account credentials are loaded from the service_account.json file, and we access the specific worksheet ("feedbackresponses") within the Google Sheets document.
 
@@ -28,7 +28,7 @@ sh = sa.open("feedbackresponses")
 wks = sh.worksheet("responses")
 ```
 
-## S3: Data Extraction
+## _S3 Data Extraction_
 
 This section involves retrieving all records from the Google Sheet through the get_all_records() method provided by the gspread library. We create a list of questions, excluding the header row, which will be used for further data processing.
 
@@ -38,7 +38,7 @@ questions = [i for i in cells[0]]
 del questions[0:1]
 ```
 
-## S4: Data Processing
+## _S4 Data Processing_
 
 The process_data function is defined to organize the extracted data into separate dictionaries for each subject. It iterates through the rows of the Google Sheet and appends responses to the corresponding questions for a specified subject. The processed data is stored in dictionaries named subject_eng, subject_cs, subject_mat, subject_phy, and subject_che.
 
@@ -65,7 +65,7 @@ for i in cells:
       r_che[j].append(i[j])
 ```
 
-## S5: Teacher Report Generation
+## _S5 Teacher Report Generation_
 
 This section utilizes Google's Generative AI, palm, to dynamically generate teacher reports based on the collected responses. A loop iterates through each subject's processed data, constructing a prompt for the generative model. The generated responses are then evaluated and stored in the reports list.
 
@@ -88,7 +88,7 @@ strictly follow this list format:
 r_eng,r_cs,r_mat,r_phy,r_che = genout[0], genout[1], genout[2], genout[3], genout[4]
 ```
 
-## S6: Google Docs and Drive Integration
+## _S6 Google Docs and Drive Integration_
 
 Here, we configure credentials for both Google Docs and Google Drive. We set the timezone, initialize the Google Docs and Drive services using the obtained credentials, and specify the template ID for the document to be copied. Additionally, the Google Drive credentials are used to initialize the service for exporting documents to PDF.
 
@@ -106,7 +106,7 @@ dservice = build('drive', 'v3', credentials=dcreds)
 template_id = '1Z8k6QK5lV0MDyTK2toJHBtgfZPYigD2QAfz98zMWbEk'
 ```
 
-## S7: Generate PDF Reports
+## _S7 Generate PDF Reports_
 
 In this final section, we loop through the generated teacher reports for each subject. For each report, a new document is created by copying the specified template. Placeholders in the document are replaced with the corresponding values from the generated report. The modified document is then exported to PDF format, and the progress is displayed during the download.
 
